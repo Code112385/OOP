@@ -3,6 +3,7 @@ package swing;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
+import java.util.ArrayList;
 import javax.swing.*;
 import javax.swing.filechooser.*;
 import javax.swing.table.*;
@@ -13,10 +14,12 @@ import javax.swing.table.*;
  */
 public class DashB extends JFrame {
 
+    private StudentInfo stuinfo = new StudentInfo();
+    private java.util.List<Info> list = new ArrayList<>();
     String[] courses = {"Select course", "BSIT", "BSIE", "BSCpE"};
-    static String row[][] = {{"", "12524", "kiwi", "toshi", "dan", "Male", "BSIT", "1", "1CG2"}, {"", "25685", "akashi", "senju", "yin", "Female", "BSIE", "3", "2CG2"}};
+//    static String row[][] = {{"", "12524", "kiwi", "toshi", "dan", "Male", "BSIT", "1", "1CG2"}, {"", "25685", "akashi", "senju", "yin", "Female", "BSIE", "3", "2CG2"}};
     static final String Col[] = {"PICTURE", "STUDENT ID", "LAST NAME", "FIRST NAME", "MIDDLE NAME", "GENDER", "COURSE", "YEAR", "SECTION"};
-    DefaultTableModel model = new DefaultTableModel(row, Col);
+    DefaultTableModel model = new DefaultTableModel(Col, 0);
     String imgpath;
 
     //Btn
@@ -158,8 +161,6 @@ public class DashB extends JFrame {
         this.setLayout(null);
         // this.add();
         this.setVisible(true);
-        
-      
 
         uploadBtn.addActionListener(new ActionListener() {
             @Override
@@ -193,6 +194,7 @@ public class DashB extends JFrame {
                 int message = JOptionPane.showConfirmDialog(null, "Are you sure you want to delete?", "Message", JOptionPane.YES_NO_OPTION);
                 if (message == 0) {
                     model.removeRow(row);
+                    list.remove(row);
                     clear();
                 }
 
@@ -259,19 +261,25 @@ public class DashB extends JFrame {
                 JOptionPane.showConfirmDialog(null, "Shehe", "mess", JOptionPane.OK_OPTION);
 
                 int row = jt.getSelectedRow();
-                
+
                 String ID = stuIDtxt.getText();
                 String Lname = lnametxt.getText();
                 String Fname = fnametxt.getText();
                 String Mname = mnametxt.getText();
-                String Gender = maleRBtn.isSelected()? "Male" : "Female";
+                String Gender = maleRBtn.isSelected() ? "Male" : "Female"; // same lang sila ng fuction sa baba ternary operator lang ginamit
                 String Course = cb.getSelectedItem().toString();
-                //String Year = 
-                
-                //Kulang pa to
-                  
-                
+                String Year = null;
+                String Section = sectiontxt.getText();
 
+                if (y1.isSelected()) {
+                    Year = y1.getText();
+                } else if (y2.isSelected()) {
+                    Year = y2.getText();
+                } else if (y3.isSelected()) {
+                    Year = y3.getText();
+                } else if (y4.isSelected()) {
+                    Year = y4.getText();
+                }
 
                 model.setValueAt(imgpath, row, 0);
                 model.setValueAt(ID, row, 1);
@@ -280,11 +288,58 @@ public class DashB extends JFrame {
                 model.setValueAt(Mname, row, 4);
                 model.setValueAt(Gender, row, 5);
                 model.setValueAt(Course, row, 6);
-             //   model.setValueAt(Year, row, 7);
-                
+                model.setValueAt(Year, row, 7);
+                model.setValueAt(Section, row, 8);
 
             }
 
+        });
+
+        addBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+              //  int row = jt.getSelectedRow();
+
+                String ID = stuIDtxt.getText();
+                String Lname = lnametxt.getText();
+                String Fname = fnametxt.getText();
+                String Mname = mnametxt.getText();
+                String Gender = maleRBtn.isSelected() ? "Male" : "Female"; // sama lang sila ng fuction sa baba ternary operator lang ginamit
+                String Course = cb.getSelectedItem().toString();
+                String Year = null;
+                String Section = sectiontxt.getText();
+
+                if (y1.isSelected()) {
+                    Year = y1.getText();
+                } else if (y2.isSelected()) {
+                    Year = y2.getText();
+                } else if (y3.isSelected()) {
+                    Year = y3.getText();
+                } else if (y4.isSelected()) {
+                    Year = y4.getText();
+                }
+
+//               model.setValueAt(imgpath, row, 0);
+//                model.setValueAt(ID, row, 1);
+//                model.setValueAt(Lname, row, 2);
+//                model.setValueAt(Fname, row, 3);
+//                model.setValueAt(Mname, row, 4);
+//                model.setValueAt(Gender, row, 5);
+//                model.setValueAt(Course, row, 6);
+//                model.setValueAt(Year, row, 7);
+//                model.setValueAt(Section, row, 8);
+
+                stuinfo.addUser(imgpath, ID, Lname, Fname, Mname, Gender, Course, Year, Section);
+                
+                for (Info student : list) {
+                    Object[] rowData = {student.getPicture(), student.getStudentId(), student.getLastName(), student.getMiddleName(), student.getGender(), student.getCourse(),
+                        student.getYear(), student.getSection()};
+                    model.addRow(rowData);
+                    
+
+                }
+            }
         });
 
     }

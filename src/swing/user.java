@@ -11,7 +11,7 @@ package swing;
 public class user {
     
     private static String username;
-     private static String passw;
+     private  String passw;
     
     public user(String name, String pass){
         this.username = name;
