@@ -27,7 +27,7 @@ public class Login extends JFrame implements ActionListener {
     String defUser = "Admin";
     String defPass = "123";
     ArrayList<user> users = new ArrayList();
-
+    
     //Labels-Login
     JLabel LoginLabel = new JLabel("Log-in Form");
     JLabel UserNLabel = new JLabel("Username");

@@ -14,8 +14,8 @@ import javax.swing.table.*;
  */
 public class DashB extends JFrame {
 
-    private StudentInfo stuinfo = new StudentInfo();
-    private java.util.List<Info> list = new ArrayList<>();
+//    private StudentInfo stuinfo = new StudentInfo();
+    private ArrayList<Info> list = new ArrayList<Info>();
     String[] courses = {"Select course", "BSIT", "BSIE", "BSCpE"};
 //    static String row[][] = {{"", "12524", "kiwi", "toshi", "dan", "Male", "BSIT", "1", "1CG2"}, {"", "25685", "akashi", "senju", "yin", "Female", "BSIE", "3", "2CG2"}};
     static final String Col[] = {"PICTURE", "STUDENT ID", "LAST NAME", "FIRST NAME", "MIDDLE NAME", "GENDER", "COURSE", "YEAR", "SECTION"};
@@ -69,7 +69,8 @@ public class DashB extends JFrame {
     JTextField mnametxt = new JTextField();
     JTextField stuIDtxt = new JTextField();
     JTextField sectiontxt = new JTextField();
-
+    
+    
     DashB() {
 
         add(clrBtn);
@@ -213,20 +214,26 @@ public class DashB extends JFrame {
                 newImage = new ImageIcon(myImage);
                 pic.setIcon(newImage);
 
-                String ID = model.getValueAt(row, 1).toString();
-                String Lname = model.getValueAt(row, 2).toString();
-                String Fname = model.getValueAt(row, 3).toString();
-                String Mname = model.getValueAt(row, 4).toString();
-                String Gender = model.getValueAt(row, 5).toString();
-                String Course = model.getValueAt(row, 6).toString();
-                String Year = model.getValueAt(row, 7).toString();
-                String Section = model.getValueAt(row, 8).toString();
-
-                stuIDtxt.setText(ID);
-                lnametxt.setText(Lname);
-                fnametxt.setText(Fname);
-                mnametxt.setText(Mname);
-                sectiontxt.setText(Section);
+                Object ID = model.getValueAt(row, 1).toString();
+                Object Lname = model.getValueAt(row, 2).toString();
+                Object Fname = model.getValueAt(row, 3).toString();
+                Object Mname = model.getValueAt(row, 4).toString();
+                Object Gender = model.getValueAt(row, 5).toString();
+                Object Course = model.getValueAt(row, 6).toString();
+                Object Year = model.getValueAt(row, 7).toString();
+                Object Section = model.getValueAt(row, 8).toString();
+                
+                String Id = ID != null ? ID.toString() : "";
+                String lname = Lname != null ? Lname.toString() : "";
+                String fname = Fname != null ? Fname.toString() : "";
+                String mname = Mname != null ? Mname.toString() : "";
+                String section = Section != null ? Section.toString() : "";
+                
+                stuIDtxt.setText(Id);
+                lnametxt.setText(lname);
+                fnametxt.setText(fname);
+                mnametxt.setText(mname);
+                sectiontxt.setText(section);
 
                 if (Gender.equals(maleRBtn.getText())) {
                     maleRBtn.setSelected(true);
@@ -330,20 +337,36 @@ public class DashB extends JFrame {
 //                model.setValueAt(Year, row, 7);
 //                model.setValueAt(Section, row, 8);
 
-                stuinfo.addUser(imgpath, ID, Lname, Fname, Mname, Gender, Course, Year, Section);
+                Info info = new Info(imgpath, ID, Lname, Fname, Mname, Gender, Course, Year, Section);
+               // stuinfo.addUser("haha", "herore", "wewee", "wewewe", "wewewee", "wewewe", "rtrre", "ffdsert", "xcerdf");
+               list.add(info);
+                Object[] rowData = new Object[]{imgpath, ID, Lname, Fname, Mname, Gender, Course, Year, Section};
+                  model.addRow(rowData);
                 
-                for (Info student : list) {
-                    Object[] rowData = {student.getPicture(), student.getStudentId(), student.getLastName(), student.getMiddleName(), student.getGender(), student.getCourse(),
-                        student.getYear(), student.getSection()};
-                    model.addRow(rowData);
-                    
-
-                }
+                  for (Info student : list) {
+                      System.out.println(student.getPicture());
+                      System.out.println(student.getStudentId());
+                      System.out.println(student.getLastName());
+                      System.out.println(student.getFirstName());
+                      System.out.println(student.getMiddleName());
+                      System.out.println(student.getGender());
+                      System.out.println(student.getCourse());
+                      System.out.println(student.getYear());
+                      System.out.println(student.getSection());
+                      
+                  }   
+//               for (Info student : list) {
+//                    Object[] rowData = new Object[]{student.getPicture(), student.getStudentId(), student.getLastName(),student.getFirstName(), student.getMiddleName(), student.getGender(), student.getCourse(),
+//                        student.getYear(), student.getSection()};
+//                    model.addRow(rowData);
+//                    
+//
+//                }
             }
         });
 
     }
-
+    
     private void clear() {
         lnametxt.setText("");
         fnametxt.setText("");

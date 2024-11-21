@@ -69,6 +69,7 @@ public class Info {
     public String getSection() {
         return section;
     }
+    
     public void setpic(String pic){
         this.picture = pic;
     }
