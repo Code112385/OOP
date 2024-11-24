@@ -21,7 +21,9 @@ public class DashB extends JFrame {
     static final String Col[] = {"PICTURE", "STUDENT ID", "LAST NAME", "FIRST NAME", "MIDDLE NAME", "GENDER", "COURSE", "YEAR", "SECTION"};
     DefaultTableModel model = new DefaultTableModel(Col, 0);
     String imgpath;
-
+    
+    Image icon = Toolkit.getDefaultToolkit().getImage("C:\\OOP1\\Icons\\businessman.png");
+    ImageIcon add = new ImageIcon("Icons\\add.png");
     //Btn
     JButton addBtn = new JButton("ADD");
     JButton uploadBtn = new JButton("Upload Photo");
@@ -69,8 +71,7 @@ public class DashB extends JFrame {
     JTextField mnametxt = new JTextField();
     JTextField stuIDtxt = new JTextField();
     JTextField sectiontxt = new JTextField();
-    
-    
+
     DashB() {
 
         add(clrBtn);
@@ -112,12 +113,15 @@ public class DashB extends JFrame {
         sp.setBounds(105, 350, 800, 100);
 
         //Btn
-        addBtn.setBounds(500, 300, 60, 25);
+        addBtn.setBounds(480, 300, 80, 25);
         updateBtn.setBounds(580, 300, 80, 25);
         deleteBtn.setBounds(680, 300, 80, 25);
         clrBtn.setBounds(780, 300, 80, 25);
         uploadBtn.setBounds(115, 270, 120, 25);
-
+        
+        //icons
+        addBtn.setIcon(add);
+        addBtn.setFocusable(false);
         //Labels
         year.setBounds(550, 220, 50, 20);
         gndr.setBounds(310, 220, 60, 20);
@@ -154,7 +158,9 @@ public class DashB extends JFrame {
 
         //combobox
         cb.setBounds(695, 175, 150, 19);
-
+        
+        this.setIconImage(icon);
+        this.setTitle("Student Information");
         this.setSize(1020, 720);
         this.setLocationRelativeTo(this);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -222,13 +228,13 @@ public class DashB extends JFrame {
                 Object Course = model.getValueAt(row, 6).toString();
                 Object Year = model.getValueAt(row, 7).toString();
                 Object Section = model.getValueAt(row, 8).toString();
-                
+
                 String Id = ID != null ? ID.toString() : "";
                 String lname = Lname != null ? Lname.toString() : "";
                 String fname = Fname != null ? Fname.toString() : "";
                 String mname = Mname != null ? Mname.toString() : "";
                 String section = Section != null ? Section.toString() : "";
-                
+
                 stuIDtxt.setText(Id);
                 lnametxt.setText(lname);
                 fnametxt.setText(fname);
@@ -265,7 +271,8 @@ public class DashB extends JFrame {
         updateBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                JOptionPane.showConfirmDialog(null, "Shehe", "mess", JOptionPane.OK_OPTION);
+               
+                
 
                 int row = jt.getSelectedRow();
 
@@ -287,7 +294,7 @@ public class DashB extends JFrame {
                 } else if (y4.isSelected()) {
                     Year = y4.getText();
                 }
-
+                
                 model.setValueAt(imgpath, row, 0);
                 model.setValueAt(ID, row, 1);
                 model.setValueAt(Lname, row, 2);
@@ -297,7 +304,9 @@ public class DashB extends JFrame {
                 model.setValueAt(Course, row, 6);
                 model.setValueAt(Year, row, 7);
                 model.setValueAt(Section, row, 8);
-
+                
+                JOptionPane.showMessageDialog(null, "the info is updated", "message", JOptionPane.INFORMATION_MESSAGE);
+                clear();
             }
 
         });
@@ -306,16 +315,21 @@ public class DashB extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
 
-              //  int row = jt.getSelectedRow();
-
+                //  int row = jt.getSelectedRow();
                 String ID = stuIDtxt.getText();
                 String Lname = lnametxt.getText();
                 String Fname = fnametxt.getText();
                 String Mname = mnametxt.getText();
-                String Gender = maleRBtn.isSelected() ? "Male" : "Female"; // sama lang sila ng fuction sa baba ternary operator lang ginamit
+                String Gender = null;
                 String Course = cb.getSelectedItem().toString();
                 String Year = null;
                 String Section = sectiontxt.getText();
+
+                if (maleRBtn.isSelected()) {
+                    Gender = maleRBtn.getText();
+                } else if (femaleRBtn.isSelected()) {
+                    Gender = femaleRBtn.getText();
+                }
 
                 if (y1.isSelected()) {
                     Year = y1.getText();
@@ -337,24 +351,37 @@ public class DashB extends JFrame {
 //                model.setValueAt(Year, row, 7);
 //                model.setValueAt(Section, row, 8);
 
-                Info info = new Info(imgpath, ID, Lname, Fname, Mname, Gender, Course, Year, Section);
-               // stuinfo.addUser("haha", "herore", "wewee", "wewewe", "wewewee", "wewewe", "rtrre", "ffdsert", "xcerdf");
-               list.add(info);
-                Object[] rowData = new Object[]{imgpath, ID, Lname, Fname, Mname, Gender, Course, Year, Section};
-                  model.addRow(rowData);
-                
-                  for (Info student : list) {
-                      System.out.println(student.getPicture());
-                      System.out.println(student.getStudentId());
-                      System.out.println(student.getLastName());
-                      System.out.println(student.getFirstName());
-                      System.out.println(student.getMiddleName());
-                      System.out.println(student.getGender());
-                      System.out.println(student.getCourse());
-                      System.out.println(student.getYear());
-                      System.out.println(student.getSection());
-                      
-                  }   
+                if (ID.isEmpty() || Lname.isEmpty() || Fname.isEmpty() || Mname.isEmpty() || Section.isEmpty()) {
+                    JOptionPane.showMessageDialog(null, "Please fill all the fields", "Message", JOptionPane.INFORMATION_MESSAGE);
+                } else if (Gender == null) {
+                    JOptionPane.showMessageDialog(null, "Please select in gender", "Message", JOptionPane.INFORMATION_MESSAGE);
+                } else if (Year == null) {
+                    JOptionPane.showMessageDialog(null, "Please select in year", "Message", JOptionPane.INFORMATION_MESSAGE);
+                } else if (cb.getSelectedIndex() == 0) {
+                    JOptionPane.showMessageDialog(null, "Please select in course", "Message", JOptionPane.INFORMATION_MESSAGE);
+                } else if (imgpath == null) {
+                    JOptionPane.showMessageDialog(null, "Please upload image", "Message", JOptionPane.INFORMATION_MESSAGE);
+                } else {
+
+                    Info info = new Info(imgpath, ID, Lname, Fname, Mname, Gender, Course, Year, Section);
+                    // stuinfo.addUser("haha", "herore", "wewee", "wewewe", "wewewee", "wewewe", "rtrre", "ffdsert", "xcerdf");
+                    list.add(info);
+                    Object[] rowData = new Object[]{imgpath, ID, Lname, Fname, Mname, Gender, Course, Year, Section};
+                    model.addRow(rowData);
+                    clear();
+                }
+                for (Info student : list) {
+                    System.out.println(student.getPicture());
+                    System.out.println(student.getStudentId());
+                    System.out.println(student.getLastName());
+                    System.out.println(student.getFirstName());
+                    System.out.println(student.getMiddleName());
+                    System.out.println(student.getGender());
+                    System.out.println(student.getCourse());
+                    System.out.println(student.getYear());
+                    System.out.println(student.getSection());
+
+                }
 //               for (Info student : list) {
 //                    Object[] rowData = new Object[]{student.getPicture(), student.getStudentId(), student.getLastName(),student.getFirstName(), student.getMiddleName(), student.getGender(), student.getCourse(),
 //                        student.getYear(), student.getSection()};
@@ -364,15 +391,31 @@ public class DashB extends JFrame {
 //                }
             }
         });
+        
+        clrBtn.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                clear();
+            }
+        
+        });
 
     }
-    
+
     private void clear() {
         lnametxt.setText("");
         fnametxt.setText("");
         mnametxt.setText("");
         stuIDtxt.setText("");
         sectiontxt.setText("");
+        pic.setIcon(null);
+        gender.clearSelection();
+        cb.setSelectedIndex(0);
+        y1.setSelected(false);
+        y2.setSelected(false);
+        y3.setSelected(false);
+        y4.setSelected(false);
+        
     }
 
 }
